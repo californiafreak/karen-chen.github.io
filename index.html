@@ -144,55 +144,40 @@
     }
 
     .hero-middle {
-      position: relative;
+      position: absolute;
+      inset: var(--nav-h) 0 35vh 0;
       z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       text-align: center;
-      padding-top: calc(var(--nav-h) + 180px);
-      padding-right: 30vw;
+      padding: 0 24px;
     }
 
-    .hero-middle p {
-      font-size: 14px;
-      font-weight: 400;
-      letter-spacing: .06em;
+    .hero-roles {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px 24px;
+      max-width: 900px;
+    }
+
+    .hero-roles li {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .14em;
+      text-transform: uppercase;
       color: var(--text);
-      line-height: 1.8;
-    }
-
-    /* Memoji */
-    .hero-memoji {
-      position: absolute;
-      top: 50%;
-      right: 8%;
-      transform: translateY(-50%);
-      z-index: 1;
-      width: clamp(220px, 28vw, 380px);
-      aspect-ratio: 1 / 1;
-    }
-
-    .hero-memoji-blob {
-      position: absolute;
-      width: 110%;
-      height: 110%;
-      top: 20%;
-      left: 20%;
-      background: radial-gradient(circle at center,
-        #FFF3B8 0%,
-        #FFE98A 30%,
-        rgba(255, 233, 138, 0.5) 60%,
-        rgba(255, 233, 138, 0) 80%);
-      filter: blur(28px);
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    .hero-memoji-img {
+      line-height: 1.4;
       position: relative;
-      z-index: 1;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      display: block;
+    }
+
+    .hero-roles li + li::before {
+      content: '·';
+      position: absolute;
+      left: -16px;
+      color: var(--text-muted);
     }
 
     .hero-name {
@@ -205,7 +190,7 @@
       line-height: 1;
     }
 
-    .hero-name span {
+    .hero-name > span {
       display: block;
       font-family: 'Aeonik', sans-serif;
       font-size: 100px;
@@ -1033,17 +1018,6 @@
       }
       .exp-header-right { padding-top: 0; }
 
-      /* Hero memoji smaller */
-      .hero-memoji {
-        width: clamp(180px, 32vw, 260px);
-        right: 5%;
-      }
-
-      .hero-middle {
-        padding-right: 32vw;
-        padding-left: 24px;
-      }
-
       .footer-inner { flex-direction: column; gap: 16px; text-align: center; }
     }
 
@@ -1052,42 +1026,35 @@
       .container { padding: 0 20px; }
       section { padding: 64px 0; }
 
-      /* Nav: compact font, allow wrapping, hide a couple */
-      nav { padding: 0 16px; height: 56px; }
-      :root { --nav-h: 56px; }
-      .nav-links { gap: 10px; flex-wrap: wrap; justify-content: center; }
-      .nav-links a { font-size: 10px; letter-spacing: .08em; }
-      .nav-links li:nth-child(3),
-      .nav-links li:nth-child(4) { display: none; }
-
-      /* Hero: memoji becomes background-style; subtitle re-centers */
-      .hero-memoji {
-        width: 220px;
-        right: 50%;
-        top: 38%;
-        transform: translate(50%, -50%);
-        opacity: .92;
+      /* Nav: compact font + wrap so all 5 items fit */
+      nav { padding: 0 12px; height: auto; min-height: 56px; }
+      .nav-links {
+        gap: 6px 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 10px 0;
       }
+      .nav-links a { font-size: 9.5px; letter-spacing: .08em; }
 
-      .hero-memoji-blob {
-        width: 130%;
-        height: 130%;
-        top: 15%;
-        left: 15%;
-      }
-
+      /* Push hero-middle up so roles clear the 2-line name */
       .hero-middle {
-        padding-top: calc(var(--nav-h) + 24px);
-        padding-right: 24px;
-        padding-left: 24px;
+        inset: var(--nav-h) 0 50vh 0;
       }
 
-      .hero-middle p {
-        font-size: 12px;
-        line-height: 1.6;
-        position: relative;
-        z-index: 3;
+      /* Hero roles match nav font on phone */
+      .hero-roles {
+        gap: 4px 14px;
+        max-width: 280px;
       }
+      .hero-roles li { font-size: 9.5px; letter-spacing: .08em; }
+      .hero-roles li + li::before { left: -10px; }
+
+      /* Name: each line stacks and fills width */
+      .hero-name .name-line {
+        display: block;
+        line-height: 0.86;
+      }
+
 
       /* About card */
       .about-card { padding: 20px; }
@@ -1131,8 +1098,8 @@
 
     /* Very narrow phones */
     @media (max-width: 380px) {
-      .nav-links li:nth-child(5) { display: none; }
-      .hero-memoji { width: 180px; }
+      .nav-links a { font-size: 9px; letter-spacing: .06em; }
+      .hero-roles li { font-size: 9px; letter-spacing: .06em; }
     }
   </style>
 </head>
@@ -1157,14 +1124,15 @@
     <div class="hero-bg-img"></div>
   </div>
   <div class="hero-middle">
-    <p>Account Management · Supply Chain Operations</p>
-  </div>
-  <div class="hero-memoji">
-    <div class="hero-memoji-blob"></div>
-    <img src="memoji.png" alt="Karen Chen avatar" class="hero-memoji-img" />
+    <ul class="hero-roles">
+      <li>Account Management</li>
+      <li>Supply Chain Operations</li>
+      <li>Process Improvement</li>
+      <li>AI Professional</li>
+    </ul>
   </div>
   <div class="hero-name">
-    <span>KAREN CHEN</span>
+    <span><span class="name-line">KAREN</span> <span class="name-line">CHEN</span></span>
   </div>
 </section>
 
@@ -1468,6 +1436,7 @@
         <div class="skill-item"><span class="skill-icon">🤝</span>Account Management</div>
         <div class="skill-item"><span class="skill-icon">👥</span>Stakeholder Management</div>
         <div class="skill-item"><span class="skill-icon">🚢</span>Supply Chain Operations</div>
+        <div class="skill-item"><span class="skill-icon">🔄</span>Process Improvement</div>
         <div class="skill-item"><span class="skill-icon">📦</span>OMS &amp; Booking Systems</div>
         <div class="skill-item"><span class="skill-icon">🔍</span>Root-Cause Analysis</div>
         <div class="skill-item"><span class="skill-icon">⚠️</span>Exception Handling</div>
@@ -1682,21 +1651,43 @@
   });
 
   // ── Fit hero name to full container width ────────────────────────────
-  function fitHeroName() {
-    const container = document.querySelector('.hero-name');
-    const span = container?.querySelector('span');
-    if (!container || !span) return;
-
-    // Measure text freely outside any overflow constraint
-    const probe = span.cloneNode(true);
+  function measureText(text) {
+    const probe = document.createElement('span');
+    probe.textContent = text;
     probe.style.cssText = 'position:fixed;top:-9999px;left:-9999px;font-size:200px;white-space:nowrap;display:inline-block;visibility:hidden;font-family:"Aeonik",sans-serif;font-weight:700;letter-spacing:-0.025em;text-transform:uppercase;';
     document.body.appendChild(probe);
-    const textW = probe.offsetWidth;
+    const w = probe.offsetWidth;
     document.body.removeChild(probe);
+    return w;
+  }
+
+  function fitHeroName() {
+    const container = document.querySelector('.hero-name');
+    const outer = container?.querySelector('span');
+    const lines = container?.querySelectorAll('.name-line');
+    if (!container || !outer) return;
 
     const containerW = container.offsetWidth;
-    if (!textW || !containerW) return;
-    span.style.fontSize = Math.floor(200 * containerW / textW) + 'px';
+    if (!containerW) return;
+
+    const isMobile = window.innerWidth <= 640;
+
+    if (isMobile && lines && lines.length) {
+      // Both lines share the same font-size, based on the WIDEST word
+      // so KAREN reaches the edge and CHEN matches the same height.
+      outer.style.fontSize = '';
+      const widths = Array.from(lines).map(l => measureText(l.textContent));
+      const maxW = Math.max(...widths);
+      if (maxW) {
+        const size = Math.floor(200 * containerW / maxW) + 'px';
+        lines.forEach(line => { line.style.fontSize = size; });
+      }
+    } else {
+      // Desktop: clear per-line sizes, fit whole name on one line
+      if (lines) lines.forEach(line => { line.style.fontSize = ''; });
+      const w = measureText(outer.textContent.replace(/\s+/g, ' ').trim());
+      if (w) outer.style.fontSize = Math.floor(200 * containerW / w) + 'px';
+    }
   }
 
   fitHeroName();
